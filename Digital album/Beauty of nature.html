@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beauty of Nature</title>
+<style>
+  body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  #album-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    height: 100%; 
+    width:100%;
+    position: relative;
+  }
+  #album-img {
+    max-width: 200%;
+    max-height: 100vh; 
+    margin-bottom: 20px;
+  }
+  #film-strip {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    border: 2px solid black;
+    padding: 5px;
+    overflow-x: hidden; 
+    margin-bottom: 20px;
+  }
+  .thumbnail {
+    width: 80px; 
+    height: 80px; 
+    margin: 0 2px; 
+    cursor: pointer;
+    border: 2px solid black; 
+    object-fit: cover;
+  }
+  .thumbnail:hover {
+    border-color: red;
+  }
+  #controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .btn {
+    padding: 10px;
+    margin: 0 5px;
+    cursor: pointer;
+    font-size: 20px;
+  }
+</style>
+</head>
+<body>
+
+<div id="album-container">
+  <h1>Beauty of Nature</h1> 
+  <img id="album-img" src="image1.jpg" alt="Nature Beauty">
+  <div id="film-strip"></div>
+  <div id="controls">
+    <button class="btn" onclick="prevImage()">&#9664;</button>
+    <button class="btn" onclick="nextImage()">&#9654;</button>
+    <button class="btn" onclick="firstImage()">⇤</button>
+    <button class="btn" onclick="lastImage()">⇥</button>
+    <button class="btn" onclick="shuffle()">↺</button>
+  </div>
+</div>
+
+<script>
+  var images = ["image1.jpeg", "image2.jpeg", "image3.jpeg", "image4.jpeg", "image5.jpeg","image6.jpeg"];
+  var currentIndex = 0;
+
+  function showImage(index) {
+    document.getElementById("album-img").src = images[index];
+    updateFilmStrip(index);
+    currentIndex = index;
+  }
+
+  function nextImage() {
+    if (currentIndex < images.length - 1) {
+      currentIndex++;
+      showImage(currentIndex);
+    }
+  }
+
+  function prevImage() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      showImage(currentIndex);
+    }
+  }
+
+  function firstImage() {
+    currentIndex = 0;
+    showImage(currentIndex);
+  }
+
+  function lastImage() {
+    currentIndex = images.length - 1;
+    showImage(currentIndex);
+  }
+
+  function shuffle() {
+    for (let i = images.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [images[i], images[j]] = [images[j], images[i]];
+    }
+    showImage(0);
+  }
+
+  function updateFilmStrip(selectedIndex) {
+    var filmStrip = document.getElementById("film-strip");
+    filmStrip.innerHTML = "";
+    images.forEach(function(image, index) {
+      var thumbnail = document.createElement("img");
+      thumbnail.src = image;
+      thumbnail.classList.add("thumbnail");
+      if (index === selectedIndex) {
+        thumbnail.style.border = "2px solid blue";
+      }
+      thumbnail.onclick = function() {
+        showImage(index);
+      };
+      filmStrip.appendChild(thumbnail);
+    });
+    var filmStripWidth = images.length * 86; 
+    filmStrip.style.width = filmStripWidth + "px";
+  }
+
+  window.onload = function() {
+    showImage(0);
+  };
+</script>
+
+</body>
+</html>
